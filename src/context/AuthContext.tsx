@@ -67,7 +67,6 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         try {
           api.defaults.headers.common.Authorization = `Bearer ${token}`;
           const { data } = await api.get("/profile");
-          console.log(data.contacts)
           navigate("/Dashboard", { replace: true });
           setUserData(data);
           setContactsList(data.contacts);

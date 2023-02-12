@@ -4,6 +4,8 @@ import { AuthContext } from "../../context/AuthContext";
 import { ButtonStyle } from "./style";
 import { FaPlus } from "react-icons/fa";
 
+
+
 export const ButtonRegister = () => {
   return <ButtonStyle type="submit">Cadastrar</ButtonStyle>;
 };
@@ -43,5 +45,7 @@ export const ButtonOpenModalContacts = () => {
 };
 
 export const ButtonAddContacts = () => {
-  return <ButtonStyle type="submit">Cadastrar Tecnologia</ButtonStyle>;
+  const {setContactsAddModal} = useContext(AuthContext)
+
+  return <ButtonStyle onClick={()=>setContactsAddModal(true)}>Cadastrar Tecnologia</ButtonStyle>;
 };

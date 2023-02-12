@@ -1,16 +1,16 @@
 import { AuthProvider } from "./context/AuthContext";
 import { Router } from "./Router/Router";
 import { Toaster } from "react-hot-toast";
-import "./App"
+import { AppDiv } from "./AppStyle";
 
 const App = () => {
   return (
-    <div id="App">
+    <AppDiv>
       <AuthProvider>
         <Router />
         <Toaster />
       </AuthProvider>
-    </div>
+    </AppDiv>
   );
 };
 

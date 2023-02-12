@@ -1,6 +1,7 @@
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
 import { Contact, List } from "./styles";
+import { ButtonAddContacts } from "../Button";
 
 export const ContactsList = () => {
   const { contactsList, setActualContacts, setContactsEditRmvModal } =
@@ -8,10 +9,12 @@ export const ContactsList = () => {
 
   return (
     <List id="listContainer">
-      {contactsList.length === 0 ? (
+      {contactsList.length === 0 ? (<>
         <h3 id="emptyList" key={"1"}>
-          Não possui nenhuma tecnologia registrada
+          Não possui nenhuma contato cadastrado
         </h3>
+        <ButtonAddContacts />
+        </>
       ) : (
         contactsList.map((elem) => {
           return (
