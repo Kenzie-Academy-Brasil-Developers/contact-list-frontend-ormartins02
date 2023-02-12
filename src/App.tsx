@@ -1,7 +1,7 @@
 import { AuthProvider } from "./context/AuthContext";
 import { Router } from "./Router/Router";
 import { Toaster } from "react-hot-toast";
-import "./App.css";
+import "./App"
 
 const App = () => {
   return (

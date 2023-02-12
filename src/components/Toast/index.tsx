@@ -44,8 +44,8 @@ export const toastSuccesRegister = () =>
     },
   });
 
-export const toastSuccesTechRegister = () =>
-  toast.success("Tecnologia adicionada com sucesso!", {
+export const toastSuccesContactsRegister = () =>
+  toast.success("Contato adicionado com sucesso!", {
     duration: 4000,
     position: "top-center",
 
@@ -66,8 +66,8 @@ export const toastSuccesTechRegister = () =>
     },
   });
 
-export const toastSuccesTechRmv = () =>
-  toast.success("Tecnologia removida com sucesso!", {
+export const toastSuccesContactsRmv = () =>
+  toast.success("Contato removido com sucesso!", {
     duration: 4000,
     position: "top-center",
 
@@ -88,7 +88,7 @@ export const toastSuccesTechRmv = () =>
     },
   });
 
-export const toastSuccesTechEdit = () =>
+export const toastSuccesContactsEdit = () =>
   toast.success("Tecnologia Atualizada com sucesso!", {
     duration: 4000,
     position: "top-center",

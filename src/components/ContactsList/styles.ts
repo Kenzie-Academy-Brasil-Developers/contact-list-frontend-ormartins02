@@ -22,32 +22,30 @@ export const List = styled.div`
     }
 
     /* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: var(--color-text-light);
-  margin: 1rem;
-  border-radius: 1.6rem;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: var(--color-primary-dark);
-  border-radius: 1.6rem;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary);
-}
-
-  
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: var(--color-text-light);
+      margin: 1rem;
+      border-radius: 1.6rem;
+    }
+    
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-primary-dark);
+      border-radius: 1.6rem;
+    }
+    
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--color-primary);
+    }
 `;
 
-export const Tech = styled.div`
+export const Contact = styled.div`
     width: 95%;
     height: 45px;
     background-color: black;

@@ -32,16 +32,16 @@ export const ButtonExit = () => {
   return <ButtonStyle onClick={logout}>Sair</ButtonStyle>;
 };
 
-export const ButtonOpenModalTech = () => {
-  const { setTechAddModal } = useContext(AuthContext);
+export const ButtonOpenModalContacts = () => {
+  const { setContactsAddModal } = useContext(AuthContext);
 
   return (
-    <ButtonStyle onClick={() => setTechAddModal(true)}>
+    <ButtonStyle onClick={() => setContactsAddModal(true)}>
       <FaPlus />
     </ButtonStyle>
   );
 };
 
-export const ButtonAddTech = () => {
+export const ButtonAddContacts = () => {
   return <ButtonStyle type="submit">Cadastrar Tecnologia</ButtonStyle>;
 };

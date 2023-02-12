@@ -1,16 +1,16 @@
 import { DivContainer } from "./styles";
-import { ButtonOpenModalTech } from "../Button";
-import { TechList } from "../TechList";
+import { ButtonOpenModalContacts } from "../Button";
+import { ContactsList } from "../ContactsList";
 
 export const ConatinerList = () => {
   return (
     <DivContainer>
       <div id="divHeaderTech">
-        <h2>Tecnologias</h2>
-        <ButtonOpenModalTech></ButtonOpenModalTech>
+        <h2>Contatos</h2>
+        <ButtonOpenModalContacts></ButtonOpenModalContacts>
       </div>
       <div>
-        <TechList />
+        <ContactsList />
       </div>
     </DivContainer>
   );

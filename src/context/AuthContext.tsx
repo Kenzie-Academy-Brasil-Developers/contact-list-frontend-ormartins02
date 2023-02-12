@@ -4,91 +4,45 @@ import { useNavigate } from "react-router-dom";
 import {
   toastFail,
   toastFailTechRegister,
+  toastSuccesContactsRmv,
   toastSuccesLogin,
   toastSuccesRegister,
-  toastSuccesTechEdit,
-  toastSuccesTechRegister,
-  toastSuccesTechRmv,
+  toastSuccesContactsEdit,
+  toastSuccesContactsRegister,
 } from "../components/Toast";
 import api from "../services/api";
+import { 
+  IContacts, 
+  ISetActualContacts, 
+  ISubmitRegisterContacts, 
+  IUserData, 
+  IUserLogin, 
+  IUserRegister, 
+  IhandleContactEdit, 
+} from "../interfaces"
+
 
 interface IAuthProviderProps {
   children: ReactNode;
 }
 
-export interface ITechs {
-  id: string;
-  title: string;
-  status: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface IUserData {
-  id: string;
-  name: string;
-  email: string;
-  course_module: string;
-  bio: string;
-  techs: ITechs[];
-  works: [];
-  contact: string;
-  created_at: string;
-  updated_at: string;
-  avatar_url: string;
-}
-
-export interface IUserLogin {
-  email: string;
-  password: string;
-}
-
-export interface IUserRegister {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  phone: string;
-}
-
-export interface IContactRegister {
-  name: string;
-  email: string;
-  phone: string;
-}
-
-export interface ISubmitRegisterTech {
-  title: string;
-  status: string;
-}
-
-export interface IhandleTechEdit {
-  status: string;
-}
-
-export interface ISetActualTechs {
-  id: string;
-  title: string;
-  status: string;
-}
-
 export interface IAuthContext {
   onSubmitLoginFunction: (data: IUserLogin) => void;
   onSubmitRegisterFunction: (data: IUserRegister) => void;
-  onSubmitRegisterTechFunction: (data: ISubmitRegisterTech) => void;
-  handleTechEdit: (data: IhandleTechEdit) => void;
-  handleTechRmv: () => void;
+  onSubmitRegisterContactsFunction: (data: ISubmitRegisterContacts) => void;
+  handleContactsEdit: (data: IhandleContactEdit) => void;
+  handleContactsRmv: () => void;
   logout: () => void;
   setUserData: React.Dispatch<React.SetStateAction<IUserData>>;
-  setActualTech: React.Dispatch<React.SetStateAction<ISetActualTechs>>;
-  setTechAddModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setTechEditRmvModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setActualContacts: React.Dispatch<React.SetStateAction<ISetActualContacts>>;
+  setContactsAddModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setContactsEditRmvModal: React.Dispatch<React.SetStateAction<boolean>>;
   userData: IUserData;
   loading: boolean;
-  techAddModal: boolean;
-  techEditRmvModal: boolean;
-  techList: ITechs[];
-  actualTech: ISetActualTechs;
+  contactsAddModal: boolean;
+  contactsEditRmvModal: boolean;
+  contactsList: IContacts[];
+  actualContacts: ISetActualContacts;
 }
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
@@ -96,12 +50,12 @@ export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 export const AuthProvider = ({ children }: IAuthProviderProps) => {
   const [userData, setUserData] = useState<IUserData>({} as IUserData);
   const [loading, setLoading] = useState(true);
-  const [techAddModal, setTechAddModal] = useState(false);
-  const [techEditRmvModal, setTechEditRmvModal] = useState(false);
-  const [techList, setTechList] = useState<ITechs[]>([] as ITechs[]);
-  const [newTechList, setNewTechList] = useState<ITechs[]>([] as ITechs[]);
-  const [actualTech, setActualTech] = useState<ISetActualTechs>(
-    {} as ISetActualTechs
+  const [contactsAddModal, setContactsAddModal] = useState(false);
+  const [contactsEditRmvModal, setContactsEditRmvModal] = useState(false);
+  const [contactsList, setContactsList] = useState<IContacts[]>([] as IContacts[]);
+  const [newContactsList, setNewContactsList] = useState<IContacts[]>([] as IContacts[]);
+  const [actualContacts, setActualContacts] = useState<ISetActualContacts>(
+    {} as ISetActualContacts
   );
 
   const navigate = useNavigate();
@@ -113,9 +67,10 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         try {
           api.defaults.headers.common.Authorization = `Bearer ${token}`;
           const { data } = await api.get("/profile");
-          setUserData(data);
-          setTechList(data.techs);
+          console.log(data.contacts)
           navigate("/Dashboard", { replace: true });
+          setUserData(data);
+          setContactsList(data.contacts);
         } catch (error) {
           console.log(error);
         } finally {
@@ -128,18 +83,17 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
   }, [navigate]);
 
   useEffect(() => {
-    setTechList(newTechList);
-  }, [newTechList]);
+    setContactsList(newContactsList);
+  }, [newContactsList]);
 
   const onSubmitLoginFunction = async (data: IUserLogin) => {
     await api
-      .post("sessions", { ...data })
+      .post("/session", { ...data })
       .then((response) => {
         const { user, token } = response.data;
         api.defaults.headers.common.Authorization = `Bearer ${token}`;
         setUserData(user);
         localStorage.setItem("@ContactList-token", token);
-        setTechList(response.data.user.techs);
         navigate("/Dashboard", { replace: true });
         toastSuccesLogin();
       })
@@ -150,8 +104,6 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
   };
 
   const onSubmitRegisterFunction = async (data: IUserRegister) => {
-
-    console.log({...data})
 
     await api
       .post("/users", { ...data })
@@ -165,13 +117,13 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     navigate("../");
   };
 
-  const onSubmitRegisterTechFunction = async (data: ISubmitRegisterTech) => {
+  const onSubmitRegisterContactsFunction = async (data: ISubmitRegisterContacts) => {
     await api
-      .post("/users/techs", data)
+      .post("/contacts", data)
       .then((res) => {
-        setNewTechList([...techList, res.data]);
-        toastSuccesTechRegister();
-        setTechAddModal(false);
+        setNewContactsList([...contactsList, res.data]);
+        toastSuccesContactsRegister();
+        setContactsAddModal(false);
       })
       .catch((res) => {
         console.error(res);
@@ -179,32 +131,32 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
       });
   };
 
-  const actTechList = async () => {
+  const actContactsList = async () => {
     const { id } = userData;
     await api.get(`/users/${id}`).then((res) => {
-      setNewTechList(res.data.techs);
+      setNewContactsList(res.data.contacts);
     });
   };
 
-  const handleTechEdit = async (data: IhandleTechEdit) => {
-    const { id } = actualTech;
-    console.log(data);
-    await api.put(`/users/techs/${id}`, { status: data.status }).then(() => {
-      actTechList();
-      const newList = techList.filter((elem) => elem);
-      setNewTechList(newList);
-      setTechEditRmvModal(false);
-      toastSuccesTechEdit();
+  const handleContactsEdit = async (data: IhandleContactEdit) => {
+    const { id } = actualContacts;
+
+    await api.put(`/contacts/${id}`, { ...data }).then(() => {
+      actContactsList();
+      const newList = contactsList.filter((elem) => elem);
+      setNewContactsList(newList);
+      setContactsEditRmvModal(false);
+      toastSuccesContactsEdit();
     });
   };
 
-  const handleTechRmv = async () => {
-    const { id } = actualTech;
-    await api.delete(`/users/techs/${id}`).then(() => {
-      const newList = techList.filter((elem) => elem.id !== id);
-      setNewTechList(newList);
-      toastSuccesTechRmv();
-      setTechEditRmvModal(false);
+  const handleContactsRmv = async () => {
+    const { id } = actualContacts;
+    await api.delete(`/contacts/${id}`).then(() => {
+      const newList = contactsList.filter((elem) => elem.id !== id);
+      setNewContactsList(newList);
+      toastSuccesContactsRmv();
+      setContactsEditRmvModal(false);
     });
   };
 
@@ -218,20 +170,20 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
       value={{
         logout,
         loading,
-        techList,
+        contactsList,
         userData,
-        actualTech,
+        actualContacts,
         setUserData,
-        techAddModal,
-        handleTechRmv,
-        setActualTech,
-        handleTechEdit,
-        setTechAddModal,
-        techEditRmvModal,
-        setTechEditRmvModal,
+        contactsAddModal,
+        handleContactsRmv,
+        setActualContacts,
+        handleContactsEdit,
+        setContactsAddModal,
+        contactsEditRmvModal,
+        setContactsEditRmvModal,
         onSubmitLoginFunction,
         onSubmitRegisterFunction,
-        onSubmitRegisterTechFunction,
+        onSubmitRegisterContactsFunction,
       }}
     >
       {children}
