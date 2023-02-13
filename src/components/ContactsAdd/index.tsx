@@ -22,7 +22,7 @@ export const ContactsAdd = () => {
 
   return (
     <Section>
-      <div id="divTechRegister">
+      <div id="divContactsRegister">
         <button id="closeModal" onClick={() => setContactsAddModal(false)}>
           x
         </button>
@@ -34,10 +34,10 @@ export const ContactsAdd = () => {
           <label htmlFor="email">Email</label>
           <InputStyle id="email" {...register("email")} />
           <span>{errors.email?.message}</span>
-          <label htmlFor="phone">Nome</label>
-          <InputStyle placeholder="DDD 5555-5555" id="phone" {...register("phone")} />
+          <label htmlFor="phone">Telefone</label>
+          <InputStyle id="phone" {...register("phone")} />
           <span>{errors.phone?.message}</span>
-          <ButtonAddContacts />
+          <button id="contact-button">Cadastrar contato</button>
         </form>
       </div>
     </Section>

@@ -8,9 +8,9 @@ export const List = styled.div`
     background-color: #212529;
     border: #FEFEFE;
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: flex-start;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
     border-radius: 8px;
     overflow-y: scroll;
     margin-bottom: 25px;
@@ -62,8 +62,8 @@ export const List = styled.div`
 `;
 
 export const Contact = styled.div`
-    min-width: 21%;
-    height: 100px;
+    width: 185px;
+    height: 110px;
     background-color: black;
     border: 1px solid  #808080;
     list-style: none;
@@ -71,7 +71,8 @@ export const Contact = styled.div`
     cursor: pointer;
     display: flex;
     text-align: left;
-
+    margin: 10px;
+    margin-bottom: -10px;
     p {
       font-size: 12px;
     }
@@ -80,7 +81,8 @@ export const Contact = styled.div`
         width: 95%;
         display: flex;
         flex-direction: column;
-        text-align: left;
+        justify-content: left;
+        align-content: flex-start;
         margin-top: -2px;
         padding: 5px;
         

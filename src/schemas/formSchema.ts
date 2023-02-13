@@ -18,6 +18,12 @@ export const formContactSchema = yup.object().shape({
     phone: yup.string().required('Telefone é obrigatório'),
 });
 
+export const formContactUpdateSchema = yup.object().shape({
+    name: yup.string(),
+    email: yup.string().email('Email inválido'),
+    phone: yup.string()
+});
+
 export const formUpdateUserSchema = yup.object().shape({
     name: yup.string(),
     email: yup.string().email('Email inválido'),

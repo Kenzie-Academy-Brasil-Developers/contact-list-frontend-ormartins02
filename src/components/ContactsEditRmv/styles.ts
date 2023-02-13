@@ -12,9 +12,17 @@ export const Section = styled.section`
     height: 100%;
     background-color: rgba(0,0,0,0.8);
 
-   #divTechRegister {
+    h2 {
+        color: #00FF7F;
+        font-size: 26px;
+        margin-top: 8px;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+
+   #divContactRegister {
     width: 296px;
-    height: 350px;
+    height: 380px;
     background-color: #212529;
     display: flex;
     flex-direction: column;
@@ -23,9 +31,8 @@ export const Section = styled.section`
     border-radius: 8px;
 
     #closeModal {
-        font-size: 16px;
-        font-weight: 400;
-        margin-top: -5px;
+        font-size: 14px;
+        font-weight: 600;
         width: 93%;
         background-color: transparent;
         border: none;
@@ -37,14 +44,14 @@ export const Section = styled.section`
         width: 95%;
         display: flex;
         justify-content: space-around;
-
+        margin-top: 6px;
     }
 
     #edit {
         width: 140px;
-        border: 1px solid #FF577F;
-        background-color: #FF577F;
-        font-size: 22px;
+        border: 1px solid #00FF7F;
+        background-color: #00FF7F;
+        font-size: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -54,13 +61,11 @@ export const Section = styled.section`
         width: 60px;
         border: 1px solid #868E96;
         background-color: #868E96;
-        font-size: 22px;
+        font-size: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
     }
-
-
 
     form {
         width: 85%;
@@ -68,6 +73,7 @@ export const Section = styled.section`
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
+        margin-top: -5px;
     }
 
     label {
@@ -75,13 +81,13 @@ export const Section = styled.section`
         text-align: left;
         font-size: 10px;
         color: #F8F9FA;
+        margin-left: 5px;
     }
 
     span{
         width: 90%;
         text-align: left;
-        margin-top: -30px;
-        padding-bottom: 10px;
+        margin-left: 10px;
         font-size: 10px;
         color: #868E96;
     }

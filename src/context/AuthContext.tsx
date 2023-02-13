@@ -11,6 +11,7 @@ import {
   toastSuccesContactsRegister,
   toastSuccesUserEdit,
   toastLoginAgain,
+  toastSuccesUserDelete,
 } from "../components/Toast";
 import api from "../services/api";
 import { 
@@ -21,7 +22,8 @@ import {
   IUserLogin, 
   IUserRegister, 
   IhandleContactEdit,
-  IUserUpdate, 
+  IUserUpdate,
+  IContactsUpdate, 
 } from "../interfaces"
 
 
@@ -33,8 +35,9 @@ export interface IAuthContext {
   onSubmitLoginFunction: (data: IUserLogin) => void;
   onSubmitRegisterFunction: (data: IUserRegister) => void;
   onSubmitRegisterContactsFunction: (data: ISubmitRegisterContacts) => void;
-  handleContactsEdit: (data: IhandleContactEdit) => void;
+  handleContactsEdit: (data: IContactsUpdate) => void;
   handleUserEdit: (data: IUserUpdate) => void;
+  handleUserDelete: () => void;
   handleContactsRmv: () => void;
   logout: () => void;
   setUserData: React.Dispatch<React.SetStateAction<IUserData>>;
@@ -107,9 +110,8 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     await api
       .post("/session", { ...data })
       .then((response) => {
-        const { user, token } = response.data;
+        const { token } = response.data;
         api.defaults.headers.common.Authorization = `Bearer ${token}`;
-        setNewUserData(user);
         localStorage.setItem("@ContactList-token", token);
         navigate("/Dashboard", { replace: true });
         toastSuccesLogin();
@@ -139,10 +141,10 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
 
     await api.patch(`/users/${id}`, { ...data }).then((res) => {
 
-      console.log(res.data)
       setUserData(res.data)
       toastSuccesUserEdit();
       if (data.email){
+        
         navigate("/", { replace: true });
         toastLoginAgain();
       }
@@ -152,13 +154,26 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     });
   };
 
+  const handleUserDelete = async () => {
+    const { id } = userData;
+    await api.delete(`/users/${id}`).then(() => {
+      setMenuAccountDeleteModal(false);
+      logout();
+      toastSuccesUserDelete();
+    }).catch((res) => {
+      console.error(res);
+      toastFail();
+    });
+  };
+
   const onSubmitRegisterContactsFunction = async (data: ISubmitRegisterContacts) => {
     await api
-      .post("/contacts", data)
+      .post("/contacts", {...data})
       .then((res) => {
-        setNewContactsList([...contactsList, res.data]);
-        toastSuccesContactsRegister();
-        setContactsAddModal(false);
+      console.log(res.data)
+      setNewContactsList([...contactsList, res.data]);
+      toastSuccesContactsRegister();
+      setContactsAddModal(false);
       })
       .catch((res) => {
         console.error(res);
@@ -167,19 +182,23 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
   };
 
   const actContactsList = async () => {
-    const { id } = userData;
-    await api.get(`/users/${id}`).then((res) => {
-      setNewContactsList(res.data.contacts);
-    });
+    const token = localStorage.getItem("@ContactList-token");
+        try {
+          api.defaults.headers.common.Authorization = `Bearer ${token}`;
+          const { data } = await api.get("/profile");
+          setNewContactsList(data.contacts);
+        } catch (error) {
+          console.log(error);
+          navigate("/", { replace: true });
+        } finally {
+        }
   };
 
-  const handleContactsEdit = async (data: IhandleContactEdit) => {
+  const handleContactsEdit = async (data: IContactsUpdate) => {
     const { id } = actualContacts;
 
-    await api.put(`/contacts/${id}`, { ...data }).then(() => {
+    await api.patch(`/contacts/${id}`, { ...data }).then((res) => {
       actContactsList();
-      const newList = contactsList.filter((elem) => elem);
-      setNewContactsList(newList);
       setContactsEditRmvModal(false);
       toastSuccesContactsEdit();
     });
@@ -187,7 +206,9 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
 
   const handleContactsRmv = async () => {
     const { id } = actualContacts;
-    await api.delete(`/contacts/${id}`).then(() => {
+    await api.delete(`/contacts/${id}`).then((res) => {
+      console.log(res.data)
+
       const newList = contactsList.filter((elem) => elem.id !== id);
       setNewContactsList(newList);
       toastSuccesContactsRmv();
@@ -197,7 +218,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
 
   function logout() {
     localStorage.clear();
-    navigate("../", { replace: true });
+    navigate("/", { replace: true });
   }
 
   return (
@@ -212,6 +233,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         actualContacts,
         contactsAddModal,
         menuAccountModal,
+        handleUserDelete,
         handleContactsRmv,
         setActualContacts,
         handleContactsEdit,

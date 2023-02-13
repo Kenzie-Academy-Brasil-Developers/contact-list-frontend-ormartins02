@@ -17,7 +17,7 @@ export const DivListHeader = styled.header`
 
 export const DivHeader = styled.header`
     height: 100vh;
-    width: 75%;
+    width: 65%;
     display: flex;
     flex-direction: column;
     justify-content: center;

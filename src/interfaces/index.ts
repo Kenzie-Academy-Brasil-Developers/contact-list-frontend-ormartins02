@@ -7,6 +7,12 @@
     phone: string;
     createdAt: string;
   }
+
+  export interface IContactsUpdate {
+    name?: string;
+    email?: string;
+    phone?: string;
+  }
   
   export interface IUserData {
     id: string;

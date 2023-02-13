@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
+import { AccountDelete } from "../../components/AccountDelete";
 import { AccountEdit } from "../../components/AccountEdit";
 import { ButtonDropMenuAccount } from "../../components/Button";
 import { ContactsAdd } from "../../components/ContactsAdd";
@@ -11,7 +12,7 @@ import { DivHeader } from "./style.Home";
 
 
 export const Dashboard = () => {
-  const { userData, contactsAddModal, contactsEditRmvModal, menuAccountModal, menuAccountEditModal } = useContext(AuthContext);
+  const { userData, contactsAddModal, contactsEditRmvModal, menuAccountModal, menuAccountEditModal, menuAccountDeleteModal } = useContext(AuthContext);
 
   return userData ? (
     <DivHeader>
@@ -24,6 +25,7 @@ export const Dashboard = () => {
         <ButtonDropMenuAccount />
         {menuAccountModal ? <MenuProfile /> : <></>}
         {menuAccountEditModal ? <AccountEdit /> : <></>}
+        {menuAccountDeleteModal ? <AccountDelete /> : <></>}
 
       </div>
       <hr />
