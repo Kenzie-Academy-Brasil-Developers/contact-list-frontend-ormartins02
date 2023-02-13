@@ -18,4 +18,9 @@ export const formContactSchema = yup.object().shape({
     phone: yup.string().required('Telefone é obrigatório'),
 });
 
-
+export const formUpdateUserSchema = yup.object().shape({
+    name: yup.string(),
+    email: yup.string().email('Email inválido'),
+    password: yup.string(),
+    phone: yup.string(),
+});

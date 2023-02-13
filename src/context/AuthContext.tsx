@@ -9,6 +9,8 @@ import {
   toastSuccesRegister,
   toastSuccesContactsEdit,
   toastSuccesContactsRegister,
+  toastSuccesUserEdit,
+  toastLoginAgain,
 } from "../components/Toast";
 import api from "../services/api";
 import { 
@@ -18,7 +20,8 @@ import {
   IUserData, 
   IUserLogin, 
   IUserRegister, 
-  IhandleContactEdit, 
+  IhandleContactEdit,
+  IUserUpdate, 
 } from "../interfaces"
 
 
@@ -31,16 +34,23 @@ export interface IAuthContext {
   onSubmitRegisterFunction: (data: IUserRegister) => void;
   onSubmitRegisterContactsFunction: (data: ISubmitRegisterContacts) => void;
   handleContactsEdit: (data: IhandleContactEdit) => void;
+  handleUserEdit: (data: IUserUpdate) => void;
   handleContactsRmv: () => void;
   logout: () => void;
   setUserData: React.Dispatch<React.SetStateAction<IUserData>>;
   setActualContacts: React.Dispatch<React.SetStateAction<ISetActualContacts>>;
   setContactsAddModal: React.Dispatch<React.SetStateAction<boolean>>;
   setContactsEditRmvModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setMenuAccountModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setMenuAccountEditModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setMenuAccountDeleteModal:React.Dispatch<React.SetStateAction<boolean>>;
   userData: IUserData;
   loading: boolean;
   contactsAddModal: boolean;
   contactsEditRmvModal: boolean;
+  menuAccountModal: boolean;
+  menuAccountEditModal: boolean;
+  menuAccountDeleteModal: boolean;
   contactsList: IContacts[];
   actualContacts: ISetActualContacts;
 }
@@ -52,8 +62,12 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
   const [loading, setLoading] = useState(true);
   const [contactsAddModal, setContactsAddModal] = useState(false);
   const [contactsEditRmvModal, setContactsEditRmvModal] = useState(false);
+  const [menuAccountModal, setMenuAccountModal] = useState(false);
+  const [menuAccountEditModal, setMenuAccountEditModal] = useState(false);
+  const [menuAccountDeleteModal, setMenuAccountDeleteModal] = useState(false);
   const [contactsList, setContactsList] = useState<IContacts[]>([] as IContacts[]);
   const [newContactsList, setNewContactsList] = useState<IContacts[]>([] as IContacts[]);
+  const [newUserData, setNewUserData] = useState<IUserData>({} as IUserData)
   const [actualContacts, setActualContacts] = useState<ISetActualContacts>(
     {} as ISetActualContacts
   );
@@ -85,13 +99,17 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     setContactsList(newContactsList);
   }, [newContactsList]);
 
+  useEffect(() => {
+    setUserData(newUserData);
+  }, [newUserData]);
+
   const onSubmitLoginFunction = async (data: IUserLogin) => {
     await api
       .post("/session", { ...data })
       .then((response) => {
         const { user, token } = response.data;
         api.defaults.headers.common.Authorization = `Bearer ${token}`;
-        setUserData(user);
+        setNewUserData(user);
         localStorage.setItem("@ContactList-token", token);
         navigate("/Dashboard", { replace: true });
         toastSuccesLogin();
@@ -114,6 +132,24 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         toastFail();
       });
     navigate("../");
+  };
+
+  const handleUserEdit = async (data: IUserUpdate) => {
+    const { id } = userData;
+
+    await api.patch(`/users/${id}`, { ...data }).then((res) => {
+
+      console.log(res.data)
+      setUserData(res.data)
+      toastSuccesUserEdit();
+      if (data.email){
+        navigate("/", { replace: true });
+        toastLoginAgain();
+      }
+    }).catch((res) => {
+      console.error(res);
+      toastFail();
+    });
   };
 
   const onSubmitRegisterContactsFunction = async (data: ISubmitRegisterContacts) => {
@@ -169,19 +205,26 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
       value={{
         logout,
         loading,
-        contactsList,
         userData,
-        actualContacts,
         setUserData,
+        contactsList,
+        handleUserEdit,
+        actualContacts,
         contactsAddModal,
+        menuAccountModal,
         handleContactsRmv,
         setActualContacts,
         handleContactsEdit,
         setContactsAddModal,
+        setMenuAccountModal,
+        menuAccountEditModal, 
         contactsEditRmvModal,
-        setContactsEditRmvModal,
         onSubmitLoginFunction,
+        menuAccountDeleteModal, 
+        setMenuAccountEditModal,
+        setContactsEditRmvModal,
         onSubmitRegisterFunction,
+        setMenuAccountDeleteModal,
         onSubmitRegisterContactsFunction,
       }}
     >

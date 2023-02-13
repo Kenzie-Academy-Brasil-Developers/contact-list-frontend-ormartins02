@@ -4,21 +4,37 @@ import styled from "styled-components";
 
 export const List = styled.div`
     width: 100%;
-    height: 448px;
+    height: 400px;
     background-color: #212529;
     border: #FEFEFE;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
     border-radius: 8px;
     overflow-y: scroll;
     margin-bottom: 25px;
+
+    #listHeader {
+      width: 95%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin-top: 5px;
+
+      button {
+        width: 100px;
+        height: 40px;
+      }
+
+    }
+
     #emptyList {
         padding: 30px;
     }
 
     #listCard {
-      margin-top: 10px;
+      margin-top: 20px;
     }
 
     /* width */
@@ -46,24 +62,32 @@ export const List = styled.div`
 `;
 
 export const Contact = styled.div`
-    width: 95%;
-    height: 45px;
+    min-width: 21%;
+    height: 100px;
     background-color: black;
     border: 1px solid  #808080;
     list-style: none;
     border-radius: 8px;
     cursor: pointer;
     display: flex;
-    justify-content: center;
-    
+    text-align: left;
+
+    p {
+      font-size: 12px;
+    }
 
     #divCard{
-        width: 100%;
+        width: 95%;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+        text-align: left;
         margin-top: -2px;
-        padding: 15px;
+        padding: 5px;
+        
+    }
+
+    p {
+      margin: auto;
     }
 
     button {

@@ -6,8 +6,6 @@ import styled from "styled-components";
         // --gray-brigth: #d1d1d1
         // --white-middle: #f5f5f5
         // --white-white: #ffffff
-        // --yellou-gold: #fdc326
-        // --yellow-middle: #ffcd42;
 
 
 export const Section = styled.section`

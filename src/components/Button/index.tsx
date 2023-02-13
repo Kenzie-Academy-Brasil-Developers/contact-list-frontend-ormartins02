@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import { ButtonStyle } from "./style";
+import { ButtonDropStyle, ButtonSaveStyle, ButtonStyle } from "./style";
 import { FaPlus } from "react-icons/fa";
 
 
@@ -47,5 +47,12 @@ export const ButtonOpenModalContacts = () => {
 export const ButtonAddContacts = () => {
   const {setContactsAddModal} = useContext(AuthContext)
 
-  return <ButtonStyle onClick={()=>setContactsAddModal(true)}>Cadastrar Tecnologia</ButtonStyle>;
+  return <ButtonStyle onClick={()=>setContactsAddModal(true)}>Cadastrar Contato</ButtonStyle>;
 };
+
+export const ButtonDropMenuAccount = () => {
+  const { setMenuAccountModal } = useContext(AuthContext)
+
+  return <ButtonDropStyle onClick={()=>setMenuAccountModal(true)}>Meu perfil</ButtonDropStyle>;
+};
+

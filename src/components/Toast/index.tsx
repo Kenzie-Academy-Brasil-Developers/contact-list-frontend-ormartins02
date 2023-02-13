@@ -44,6 +44,50 @@ export const toastSuccesRegister = () =>
     },
   });
 
+  export const toastSuccesUserEdit = () =>
+  toast.success("Usuário atualizado com sucesso!", {
+    duration: 4000,
+    position: "top-center",
+
+    // Styling
+    style: {},
+    className: "",
+
+    // Change colors of success/error/loading icon
+    iconTheme: {
+      primary: "#6fe600",
+      secondary: "#fff",
+    },
+
+    // Aria
+    ariaProps: {
+      role: "status",
+      "aria-live": "polite",
+    },
+  });
+
+  export const toastLoginAgain = () =>
+  toast.success("Faça login novamente!", {
+    duration: 4000,
+    position: "top-center",
+
+    // Styling
+    style: {},
+    className: "",
+
+    // Change colors of success/error/loading icon
+    iconTheme: {
+      primary: "#e68a00",
+      secondary: "#fff",
+    },
+
+    // Aria
+    ariaProps: {
+      role: "status",
+      "aria-live": "polite",
+    },
+  });
+
 export const toastSuccesContactsRegister = () =>
   toast.success("Contato adicionado com sucesso!", {
     duration: 4000,

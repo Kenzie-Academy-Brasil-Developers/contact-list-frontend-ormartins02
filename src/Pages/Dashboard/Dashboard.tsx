@@ -1,25 +1,30 @@
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { ButtonExit } from "../../components/Button";
+import { AccountEdit } from "../../components/AccountEdit";
+import { ButtonDropMenuAccount } from "../../components/Button";
 import { ContactsAdd } from "../../components/ContactsAdd";
 import { ContactsEditRmv } from "../../components/ContactsEditRmv";
 import { ContactsList } from "../../components/ContactsList";
+import { MenuProfile } from "../../components/MenuProfile";
 import { AuthContext } from "../../context/AuthContext";
 import { DivHeader } from "./style.Home";
 
 
 export const Dashboard = () => {
-  const { userData, contactsAddModal, contactsEditRmvModal } = useContext(AuthContext);
+  const { userData, contactsAddModal, contactsEditRmvModal, menuAccountModal, menuAccountEditModal } = useContext(AuthContext);
 
   return userData ? (
     <DivHeader>
       <div id="headerHome">
         <h1>Contact List</h1>
-        <ButtonExit />
       </div>
       <hr />
       <div id="userHome">
         <h2>Olá, {userData.name}</h2>
+        <ButtonDropMenuAccount />
+        {menuAccountModal ? <MenuProfile /> : <></>}
+        {menuAccountEditModal ? <AccountEdit /> : <></>}
+
       </div>
       <hr />
       <ContactsList />

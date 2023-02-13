@@ -7,7 +7,7 @@ export const ConatinerList = () => {
     <DivContainer>
       <div id="divHeaderTech">
         <h2>Contatos</h2>
-        <ButtonOpenModalContacts></ButtonOpenModalContacts>
+        <ButtonOpenModalContacts />
       </div>
       <div>
         <ContactsList />
